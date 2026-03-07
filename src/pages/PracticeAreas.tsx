@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Briefcase, Gavel, MapPin, Users, Scale, FileText, Shield, Building, FileSignature } from 'lucide-react';
+import { Briefcase, Gavel, MapPin, Users, Scale, FileText, Shield, FileSignature, Handshake, UserCheck } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 const PracticeAreas = () => {
   const services = [
@@ -39,10 +41,25 @@ const PracticeAreas = () => {
       icon: <Shield className="h-10 w-10" />,
       description: "We provide professional legal opinions and general advisory services to individuals and corporations. Our goal is to help you understand your legal position and make informed decisions in any situation."
     },
+    {
+      title: "Dispute Resolution",
+      icon: <Handshake className="h-10 w-10" />,
+      description: "Beyond litigation, we offer mediation and arbitration services to resolve disputes efficiently and amicably. We focus on achieving favorable outcomes while preserving relationships and minimizing costs."
+    },
+    {
+      title: "Employment & Labour Law",
+      icon: <UserCheck className="h-10 w-10" />,
+      description: "We advise both employers and employees on labour laws, employment contracts, termination procedures, and workplace policies. We ensure compliance with the Employment Act and represent clients in labour court disputes."
+    },
   ];
 
   return (
     <div className="bg-gray-50">
+      <Helmet>
+        <title>Practice Areas | Wachira Wekhomba Aim & Associates</title>
+        <meta name="description" content="Explore our comprehensive legal services including Corporate Law, Civil Litigation, Property Law, and more." />
+      </Helmet>
+
       {/* Header */}
       <div className="bg-primary text-white py-20 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,12 +108,12 @@ const PracticeAreas = () => {
           <p className="text-gray-600 mb-8 text-lg">
             Contact us for a preliminary consultation. We will assess your situation and guide you towards the right legal solution.
           </p>
-          <a 
-            href="/contact" 
+          <Link 
+            to="/consultation" 
             className="inline-block bg-primary text-white font-bold py-3 px-8 rounded-sm hover:bg-primary/90 transition-colors"
           >
             Get in Touch
-          </a>
+          </Link>
         </div>
       </section>
     </div>

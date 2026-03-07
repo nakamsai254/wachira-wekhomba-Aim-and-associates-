@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
+import { Menu, X, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const Navbar = () => {
@@ -22,10 +22,11 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'About Us', path: '/about' },
+    { name: 'About', path: '/about' },
     { name: 'Practice Areas', path: '/practice-areas' },
-    { name: 'Our Team', path: '/team' },
-    { name: 'Contact Us', path: '/contact' },
+    { name: 'Team', path: '/team' },
+    { name: 'Insights', path: '/insights' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   return (
@@ -37,17 +38,17 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex flex-col">
-            <span className="font-serif text-xl md:text-2xl font-bold text-primary leading-tight">
+          <Link to="/" className="flex flex-col group">
+            <span className="font-serif text-xl md:text-2xl font-bold text-primary leading-tight group-hover:text-secondary transition-colors">
               Wachira Wekhomba Aim
             </span>
-            <span className="font-sans text-xs md:text-sm tracking-widest text-secondary uppercase">
+            <span className="font-sans text-xs md:text-sm tracking-widest text-secondary uppercase group-hover:text-primary transition-colors">
               & Associates Advocates
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex space-x-8 items-center">
+          <div className="hidden lg:flex space-x-6 items-center">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -59,16 +60,34 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+            
+            <div className="h-6 w-px bg-gray-300 mx-2"></div>
+
             <Link
-              to="/contact"
-              className="bg-primary text-white px-5 py-2 rounded-sm text-sm font-medium hover:bg-primary/90 transition-colors border border-primary"
+              to="/portal"
+              className="flex items-center text-sm font-medium text-secondary hover:text-primary transition-colors"
+            >
+              <Lock size={14} className="mr-1" />
+              Client Portal
+            </Link>
+
+            <Link
+              to="/consultation"
+              className="bg-primary text-white px-5 py-2 rounded-sm text-sm font-medium hover:bg-primary/90 transition-colors border border-primary shadow-sm hover:shadow-md"
             >
               Book Consultation
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center space-x-4">
+             <Link
+              to="/portal"
+              className="flex items-center text-xs font-medium text-secondary hover:text-primary transition-colors"
+            >
+              <Lock size={14} className="mr-1" />
+              Portal
+            </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-700 hover:text-primary focus:outline-none"
@@ -86,7 +105,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
+            className="lg:hidden bg-white border-t border-gray-100 overflow-hidden shadow-lg"
           >
             <div className="px-4 pt-2 pb-6 space-y-1">
               {navLinks.map((link) => (
@@ -102,10 +121,17 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
-              <div className="pt-4 px-3">
+              <div className="pt-4 px-3 space-y-3">
                 <Link
-                  to="/contact"
-                  className="block w-full text-center bg-primary text-white px-5 py-3 rounded-sm text-base font-medium hover:bg-primary/90 transition-colors"
+                  to="/portal"
+                  className="flex items-center justify-center w-full px-5 py-3 text-base font-medium text-secondary bg-secondary/5 border border-secondary/20 rounded-sm hover:bg-secondary/10 transition-colors"
+                >
+                  <Lock size={16} className="mr-2" />
+                  Access Client Portal
+                </Link>
+                <Link
+                  to="/consultation"
+                  className="block w-full text-center bg-primary text-white px-5 py-3 rounded-sm text-base font-medium hover:bg-primary/90 transition-colors shadow-md"
                 >
                   Book Consultation
                 </Link>
