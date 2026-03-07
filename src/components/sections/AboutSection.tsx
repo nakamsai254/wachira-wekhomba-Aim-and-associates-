@@ -46,7 +46,7 @@ const AboutSection = ({ data }: { data: any }) => {
               ))}
             </div>
 
-            <Link to="/about" className="inline-flex items-center text-primary font-bold hover:text-secondary transition-colors text-lg group border-b-2 border-primary/20 pb-1 hover:border-primary">
+            <Link to="/consultation" className="inline-flex items-center text-primary font-bold hover:text-secondary transition-colors text-lg group border-b-2 border-primary/20 pb-1 hover:border-primary">
               Learn More About Us <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-2 transition-transform" />
             </Link>
           </motion.div>

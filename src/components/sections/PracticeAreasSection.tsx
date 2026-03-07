@@ -65,7 +65,7 @@ const PracticeAreasSection = ({ data }: { data: any }) => {
                 </div>
                 <h3 className="font-serif text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary transition-colors">{area.title}</h3>
                 <p className="text-gray-600 mb-8 text-sm leading-relaxed">{area.desc}</p>
-                <Link to="/practice-areas" className="text-primary text-sm font-bold hover:text-secondary inline-flex items-center uppercase tracking-wide group-hover:translate-x-2 transition-transform">
+                <Link to="/consultation" className="text-primary text-sm font-bold hover:text-secondary inline-flex items-center uppercase tracking-wide group-hover:translate-x-2 transition-transform">
                   Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </TiltCard>

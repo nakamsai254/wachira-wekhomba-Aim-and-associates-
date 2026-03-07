@@ -109,9 +109,9 @@ const PracticeAreas = () => {
                       <p className="text-gray-600 leading-relaxed mb-6">
                         {service.description}
                       </p>
-                      <span className="inline-flex items-center text-primary font-bold text-sm uppercase tracking-wide group-hover:translate-x-2 transition-transform">
+                      <Link to="/consultation" className="inline-flex items-center text-primary font-bold text-sm uppercase tracking-wide group-hover:translate-x-2 transition-transform">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                      </span>
+                      </Link>
                     </div>
                   </TiltCard>
                 </motion.div>

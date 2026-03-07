@@ -37,7 +37,7 @@ const MediaLibrary = ({ onSelect, selectable = false }: MediaLibraryProps) => {
     })();
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop } as any);
 
   const handleDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
