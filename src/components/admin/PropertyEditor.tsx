@@ -230,11 +230,25 @@ const PropertyEditor = ({ section, onChange, onClose }: PropertyEditorProps) => 
                          className="w-full px-2 py-1 border rounded text-sm"
                       />
                    </div>
+                   <div className="mt-2">
+                      <label className="block text-xs font-medium text-gray-500">Detailed Content (for Learn More page)</label>
+                      <textarea 
+                         rows={4}
+                         value={area.details || ''} 
+                         onChange={(e) => {
+                            const newAreas = [...(data.areas || [])];
+                            newAreas[index] = { ...area, details: e.target.value };
+                            handleChange('areas', newAreas);
+                         }}
+                         className="w-full px-2 py-1 border rounded text-sm"
+                         placeholder="Enter detailed information about this service..."
+                      />
+                   </div>
                 </div>
              ))}
              <button 
                 onClick={() => {
-                   const newAreas = [...(data.areas || []), { title: 'New Area', desc: 'Description here...', icon: 'briefcase' }];
+                   const newAreas = [...(data.areas || []), { title: 'New Area', desc: 'Description here...', details: '', icon: 'briefcase' }];
                    handleChange('areas', newAreas);
                 }}
                 className="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary flex items-center justify-center text-sm"
