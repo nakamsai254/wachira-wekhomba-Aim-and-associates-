@@ -6,7 +6,7 @@ import { setDocument } from '../../services/firestore';
 import SortableSectionItem from '../../components/admin/SortableSectionItem';
 import PropertyEditor from '../../components/admin/PropertyEditor';
 import SectionRenderer from '../../components/SectionRenderer';
-import { Save, Plus, Loader2, Monitor, Smartphone, Tablet, ChevronLeft, Layout, Edit } from 'lucide-react';
+import { Save, Plus, Loader2, Monitor, Smartphone, Tablet, ChevronLeft, Layout, Edit, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const ContentEditor = () => {
@@ -15,6 +15,26 @@ const ContentEditor = () => {
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsSidebarOpen(false);
+        setPreviewMode('mobile');
+      } else {
+        setIsSidebarOpen(true);
+        setPreviewMode('desktop');
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (pageData?.sections) {
@@ -91,9 +111,21 @@ const ContentEditor = () => {
   const selectedSection = sections.find((s) => s.id === selectedSectionId);
 
   return (
-    <div className="flex h-screen bg-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-gray-100 overflow-hidden relative">
+      {/* Mobile Sidebar Overlay */}
+      {isMobile && isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Left Sidebar: Section List */}
-      <div className="w-80 bg-white border-r border-gray-200 flex flex-col z-20 shadow-xl">
+      <div className={`
+        w-80 bg-white border-r border-gray-200 flex flex-col z-40 shadow-xl
+        ${isMobile ? 'fixed inset-y-0 left-0 transform transition-transform duration-300' : ''}
+        ${isMobile && !isSidebarOpen ? '-translate-x-full' : ''}
+      `}>
         <div className="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
           <div className="flex items-center gap-2">
             <Link to="/admin" className="p-1 hover:bg-gray-200 rounded-full transition-colors">
@@ -101,13 +133,23 @@ const ContentEditor = () => {
             </Link>
             <h2 className="font-bold text-gray-900">Page Structure</h2>
           </div>
-          <button 
-            onClick={handleSave} 
-            disabled={saving}
-            className="p-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 shadow-sm"
-          >
-            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={handleSave} 
+              disabled={saving}
+              className="p-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 shadow-sm"
+            >
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+            </button>
+            {isMobile && (
+              <button 
+                onClick={() => setIsSidebarOpen(false)}
+                className="p-2 text-gray-500 hover:bg-gray-200 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
@@ -118,7 +160,10 @@ const ContentEditor = () => {
                   key={section.id}
                   section={section}
                   isSelected={selectedSectionId === section.id}
-                  onSelect={setSelectedSectionId}
+                  onSelect={(id) => {
+                    setSelectedSectionId(id);
+                    if (isMobile) setIsSidebarOpen(false);
+                  }}
                   onDelete={handleDeleteSection}
                   onToggleVisibility={handleToggleVisibility}
                 />
@@ -137,7 +182,10 @@ const ContentEditor = () => {
               {['hero', 'stats', 'about', 'practice-areas', 'cta'].map((type) => (
                 <button
                   key={type}
-                  onClick={() => handleAddSection(type)}
+                  onClick={() => {
+                    handleAddSection(type);
+                    if (isMobile) setIsSidebarOpen(false);
+                  }}
                   className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm capitalize flex items-center"
                 >
                   <Layout className="w-4 h-4 mr-2 text-gray-400" />
@@ -150,27 +198,46 @@ const ContentEditor = () => {
       </div>
 
       {/* Main Area: Live Preview */}
-      <div className="flex-1 flex flex-col bg-gray-100 relative">
+      <div className="flex-1 flex flex-col bg-gray-100 relative w-full">
         {/* Toolbar */}
-        <div className="h-14 bg-white border-b border-gray-200 flex items-center justify-center gap-4 shadow-sm z-10">
-          <button 
-            onClick={() => setPreviewMode('desktop')}
-            className={`p-2 rounded-lg transition-colors ${previewMode === 'desktop' ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:text-gray-600'}`}
-          >
-            <Monitor className="w-5 h-5" />
-          </button>
-          <button 
-            onClick={() => setPreviewMode('tablet')}
-            className={`p-2 rounded-lg transition-colors ${previewMode === 'tablet' ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:text-gray-600'}`}
-          >
-            <Tablet className="w-5 h-5" />
-          </button>
-          <button 
-            onClick={() => setPreviewMode('mobile')}
-            className={`p-2 rounded-lg transition-colors ${previewMode === 'mobile' ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:text-gray-600'}`}
-          >
-            <Smartphone className="w-5 h-5" />
-          </button>
+        <div className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 shadow-sm z-10">
+          <div className="flex items-center">
+            {isMobile && (
+              <button 
+                onClick={() => setIsSidebarOpen(true)}
+                className="p-2 mr-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
+                <Menu className="w-5 h-5" />
+              </button>
+            )}
+            <span className="font-bold text-gray-700 md:hidden">Preview</span>
+          </div>
+          
+          <div className="flex items-center gap-2 md:gap-4 mx-auto md:mx-0">
+            <button 
+              onClick={() => setPreviewMode('desktop')}
+              className={`p-2 rounded-lg transition-colors hidden md:block ${previewMode === 'desktop' ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:text-gray-600'}`}
+              title="Desktop View"
+            >
+              <Monitor className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => setPreviewMode('tablet')}
+              className={`p-2 rounded-lg transition-colors hidden md:block ${previewMode === 'tablet' ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:text-gray-600'}`}
+              title="Tablet View"
+            >
+              <Tablet className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => setPreviewMode('mobile')}
+              className={`p-2 rounded-lg transition-colors ${previewMode === 'mobile' ? 'bg-primary/10 text-primary' : 'text-gray-400 hover:text-gray-600'}`}
+              title="Mobile View"
+            >
+              <Smartphone className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <div className="w-8 md:hidden"></div> {/* Spacer for centering */}
         </div>
 
         {/* Preview Container */}

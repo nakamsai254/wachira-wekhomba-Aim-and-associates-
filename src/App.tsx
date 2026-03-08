@@ -27,6 +27,7 @@ const Dashboard = React.lazy(() => import('./pages/admin/Dashboard'));
 const ContentEditor = React.lazy(() => import('./pages/admin/ContentEditor'));
 const MediaManager = React.lazy(() => import('./pages/admin/MediaManager'));
 const Settings = React.lazy(() => import('./pages/admin/Settings'));
+const Bookings = React.lazy(() => import('./pages/admin/Bookings'));
 const Login = React.lazy(() => import('./pages/admin/Login'));
 
 // Wrapper to handle AnimatePresence and Loading
@@ -125,6 +126,10 @@ const router = createBrowserRouter([
       {
         path: "content",
         element: <ContentEditor />,
+      },
+      {
+        path: "bookings",
+        element: <Bookings />,
       },
       {
         path: "media",

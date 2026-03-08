@@ -41,10 +41,14 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex flex-col group relative z-50">
-            <span className={`font-serif text-xl md:text-2xl font-bold leading-tight transition-colors duration-300 ${isScrolled ? 'text-primary' : 'text-white mix-blend-difference'}`}>
+            <span className={`font-serif text-xl md:text-2xl font-bold leading-tight transition-colors duration-300 ${
+              isOpen ? 'text-gray-900' : (isScrolled ? 'text-primary' : 'text-white mix-blend-difference')
+            }`}>
               Wachira Wekhomba Aim
             </span>
-            <span className={`font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase transition-colors duration-300 ${isScrolled ? 'text-secondary' : 'text-white/80 mix-blend-difference'}`}>
+            <span className={`font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase transition-colors duration-300 ${
+              isOpen ? 'text-gray-500' : (isScrolled ? 'text-secondary' : 'text-white/80 mix-blend-difference')
+            }`}>
               & Associates Advocates
             </span>
           </Link>
@@ -84,9 +88,11 @@ const Navbar = () => {
           <div className="lg:hidden flex items-center space-x-4 z-50">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`focus:outline-none transition-transform active:scale-95 ${isScrolled ? 'text-gray-700 hover:text-primary' : 'text-white hover:text-white/80 mix-blend-difference'}`}
+              className={`focus:outline-none transition-transform active:scale-95 ${
+                isOpen ? 'text-gray-900' : (isScrolled ? 'text-gray-700 hover:text-primary' : 'text-white hover:text-white/80 mix-blend-difference')
+              }`}
             >
-              {isOpen ? <X size={24} className="text-gray-900" /> : <Menu size={24} />}
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>

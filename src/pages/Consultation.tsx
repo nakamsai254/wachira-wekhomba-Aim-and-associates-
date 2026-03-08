@@ -7,6 +7,8 @@ import { Helmet } from 'react-helmet-async';
 import PageTransition from '../components/ui/PageTransition';
 import TiltCard from '../components/ui/TiltCard';
 
+import { addDocument } from '../services/firestore';
+
 const Consultation = () => {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [formData, setFormData] = useState({
@@ -17,19 +19,32 @@ const Consultation = () => {
     description: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
-    setTimeout(() => {
+    setIsSubmitting(true);
+    
+    try {
+      await addDocument('bookings', {
+        ...formData,
+        date: startDate?.toISOString(),
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      });
       setSubmitted(true);
       window.scrollTo(0, 0);
-    }, 1000);
+    } catch (error) {
+      console.error("Error booking consultation:", error);
+      alert("Failed to submit booking. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -248,10 +263,17 @@ const Consultation = () => {
                 <div className="pt-6">
                   <button
                     type="submit"
-                    className="w-full bg-accent text-primary font-bold py-4 px-8 rounded-sm hover:bg-accent-light transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center space-x-2"
+                    disabled={isSubmitting}
+                    className="w-full bg-accent text-primary font-bold py-4 px-8 rounded-sm hover:bg-accent-light transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center space-x-2 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    <span>Confirm Booking Request</span>
-                    <CheckCircle className="h-5 w-5" />
+                    {isSubmitting ? (
+                      <span>Processing...</span>
+                    ) : (
+                      <>
+                        <span>Confirm Booking Request</span>
+                        <CheckCircle className="h-5 w-5" />
+                      </>
+                    )}
                   </button>
                   <p className="text-xs text-gray-500 mt-6 text-center">
                     By submitting this form, you agree to our privacy policy. Your information is kept strictly confidential.

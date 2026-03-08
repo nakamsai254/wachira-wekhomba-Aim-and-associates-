@@ -274,7 +274,7 @@ const PropertyEditor = ({ section, onChange, onClose }: PropertyEditorProps) => 
   };
 
   return (
-    <div className="h-full flex flex-col bg-white border-l border-gray-200 shadow-xl w-80 fixed right-0 top-0 bottom-0 z-40 transform transition-transform duration-300 ease-in-out translate-x-0">
+    <div className="h-full flex flex-col bg-white border-l border-gray-200 shadow-xl w-full md:w-80 fixed right-0 top-0 bottom-0 z-50 transform transition-transform duration-300 ease-in-out translate-x-0">
       <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gray-50">
         <h3 className="font-bold text-gray-900 capitalize">{section.type.replace('-', ' ')} Settings</h3>
         <button onClick={onClose} className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-200 transition-colors">
